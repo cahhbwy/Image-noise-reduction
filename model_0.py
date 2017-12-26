@@ -5,6 +5,7 @@ from data_IO import *
 import tensorflow as tf
 from tensorflow.contrib import layers
 import numpy as np
+import time
 
 
 def model(_image, _batch_size, _block_size):
@@ -70,7 +71,10 @@ def test(_image, step):
     sess.run(tf.global_variables_initializer())
     saver = tf.train.Saver()
     saver.restore(sess, "./model/model.ckpt-%d" % step)
+    start_time = time.time()
     v_output_clear_image = sess.run(m_output_clear_image, feed_dict={m_noisy_image_input: img_data})
+    stop_time = time.time()
+    print("time_cost: %f" % (stop_time - start_time))
     out_image = v_output_clear_image.reshape(v_output_clear_image.shape[0:3]).transpose((1, 2, 0))
     if out_image.shape[2] == 1:
         out_image = out_image.reshape(out_image.shape[0:2])
@@ -90,15 +94,16 @@ def add_noise(_image, noise_stddev=None):
 
 
 if __name__ == '__main__':
-    sel = 1
+    sel = 2
     if sel == 1:
         batch_size = 64
         block_size = 128
         channel = 1
         train(batch_size, block_size, channel)
     else:
-        image = Image.open("test/Lenna.jpg")
-        noisy_image = add_noise(image, 15. / 255.)
-        output = test(noisy_image, 3100)
+        image = Image.open("test/test.jpg")
+        noisy_image = add_noise(image, 16. / 255.)
+        output = test(noisy_image, 1900)
         noisy_image.save("test/noisy_image.jpg")
         output.save("test/output_fcn.jpg")
+        print("finished")

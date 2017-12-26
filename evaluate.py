@@ -2,7 +2,9 @@
 import tensorflow as tf
 from PIL import Image
 import numpy as np
+import os
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
 
