@@ -101,9 +101,10 @@ if __name__ == '__main__':
         channel = 1
         train(batch_size, block_size, channel)
     else:
-        image = Image.open("test/test.jpg")
-        noisy_image = add_noise(image, 16. / 255.)
+        image = Image.open("test/00000014.jpg")
+        noisy_image = add_noise(image, 25. / 255.)
         output = test(noisy_image, 1900)
         noisy_image.save("test/noisy_image.jpg")
         output.save("test/output_fcn.jpg")
         print("finished")
+
